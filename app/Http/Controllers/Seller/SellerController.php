@@ -16,13 +16,15 @@ class SellerController extends Controller
     public function index()
     {
         $vendedores = Seller::has('products')->get(); // recuerda que el modelo seller tiene una relación products. Se lo ponemos al has y lo obtenemos con el get
-        return response()->json(['data' => $vendedores], 200);
+        // return response()->json(['data' => $vendedores], 200);
+        return $this->showAll($vendedores);
     }
 
     public function show($id)
     {
         $vendedor = Seller::has('products')->findOrFail($id); 
-        return response()->json(['data' => $vendedor], 200);
+        // return response()->json(['data' => $vendedor], 200);
+        return $this->showOne($vendedor);
     }
 
 }

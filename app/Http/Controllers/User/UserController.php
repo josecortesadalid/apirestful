@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Http\Controllers\ApiController;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class UserController extends ApiController
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +17,8 @@ class UserController extends Controller
     public function index()
     {
         $usuarios = User::all();
-        return response()->json(['data' => $usuarios], 200);
+        // return response()->json(['data' => $usuarios], 200);
+        return $this->showAll($usuarios);
     }
 
     /**
@@ -51,7 +53,8 @@ class UserController extends Controller
         $campos['admin'] = User::USUARIO_REGULAR;
 
         $usuario = User::create($campos);
-        return response()->json(['data' => $usuario], 201); // 201, se realizó la operación de almacenamiento
+        // return response()->json(['data' => $usuario], 201); // 201, se realizó la operación de almacenamiento
+        return $this->showOne($usuario);
     }
 
     /**
@@ -63,7 +66,8 @@ class UserController extends Controller
     public function show($id)
     {
         $usuario = User::findOrFail($id); // la diferencia entre find y findorfail es que find solo devuelve un null, findorfail dispara la excepción y la respuesta ya sería de tipo 404
-        return response()->json(['data' => $usuario], 200);
+        // return response()->json(['data' => $usuario], 200);
+        return $this->showOne($usuario);
     }
 
     /**
@@ -104,18 +108,21 @@ class UserController extends Controller
         }
         if($request->has('admin')){ 
             if(!$user->esVerificado()){
-                return response()->json(['error' => 'Solo los usuarios verificados pueden cambiar el valor del admin', 'code' => 409], 409); 
-                // 409, conflicto con la petición que ha realizado el
+                // return response()->json(['error' => 'Solo los usuarios verificados pueden cambiar el valor del admin', 'code' => 409], 409); 
+                return $this->errorResponse('Solo los usuarios verificados pueden cambiar el valor del admin', 409);
+                
             }
             $user->admin = $request->admin;
         }
 
         if(!$user->isDirty()){ // isDirty valida si alguno de los atributos originales ha cambiado con respecto al valor actual
-            return response()->json(['error' => 'Se debe introducir al menos un valor diferente para actualizar', 'code' => 422], 422); // 422 petición malformada
+            // return response()->json(['error' => 'Se debe introducir al menos un valor diferente para actualizar', 'code' => 422], 422); // 422 petición malformada
+            return $this->errorResponse('Se debe introducir al menos un valor diferente para actualizar', 422);
         }
 
         $user->save();
-        return response()->json(['data' => $user], 200);
+        // return response()->json(['data' => $user], 200);
+        return $this->showOne($user);
     }
 
     /**
@@ -128,6 +135,7 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
         $user->delete();
-        return response()->json(['data' => $user], 200);
+        // return response()->json(['data' => $user], 200);
+        return $this->showOne($user);
     }
 }
