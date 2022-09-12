@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Support\Facades\Response;
+use Symfony\Component\HttpFoundation\Response as HttpFoundationResponse;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -50,7 +52,7 @@ class Handler extends ExceptionHandler
             //
         });
     }
-    public function render($request, Throwable $exception) 
+    public function render($request, Throwable $exception):HttpFoundationResponse 
     {
         if($exception instanceof ValidationException){
             return $this->convertValidationExceptionToResponse($exception, $request);
