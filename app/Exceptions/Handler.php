@@ -2,7 +2,7 @@
 
 namespace App\Exceptions;
 
-use Exception;
+
 use App\Traits\ApiResponser;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Response;
 use Symfony\Component\HttpFoundation\Response as HttpFoundationResponse;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -52,7 +53,8 @@ class Handler extends ExceptionHandler
             //
         });
     }
-    public function render($request, Throwable $exception):HttpFoundationResponse 
+    /*
+    public function render($request, Throwable $exception) : HttpFoundationResponse | JsonResponse
     {
         if($exception instanceof ValidationException){
             return $this->convertValidationExceptionToResponse($exception, $request);
@@ -83,8 +85,16 @@ class Handler extends ExceptionHandler
                 // le ponemos 409 debido a que es un conflicto, no podemos realizar la eliminación debido a otras problemáticas dentro de nuestro sistema
             }
         }
-        return parent::render($request, $exception);
+
+        // Si estamos en modo debug, que render se ejecute para tener más información sobre el error
+        // Si no estamos en modo debug, retornamos la respuesta de fallo simple
+        if (config('app.debug')) { // Para acceder a este valor, utilizamos el helper de config. App es el nombre del archivo, debug es el nombre del índice
+            return parent::render($request, $exception);
+        }
+        return $this->errorResponse('Fallo inesperado', 500);
+
     }
+    */
 
     protected function unauthenticated($request, AuthenticationException $exception)
     {

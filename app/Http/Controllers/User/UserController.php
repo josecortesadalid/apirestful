@@ -63,11 +63,11 @@ class UserController extends ApiController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(User $user) // antes teníamos puesto $id como parámetro, sin tipo. Es importante el nombre de la variable, debe ser $user
     {
-        $usuario = User::findOrFail($id); // la diferencia entre find y findorfail es que find solo devuelve un null, findorfail dispara la excepción y la respuesta ya sería de tipo 404
-        // return response()->json(['data' => $usuario], 200);
-        return $this->showOne($usuario);
+        // $usuario = User::findOrFail($id); Ahora nos ahorramos esta línea, al especificarle el tipo, recibe el id y automáticamente nos devuelve la instancia
+
+        return $this->showOne($user);
     }
 
     /**
@@ -85,9 +85,9 @@ class UserController extends ApiController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, User $user)
     {
-        $user = User::findOrFail($id);
+        // $user = User::findOrFail($id); // En vez de $id, hemos puesto User $user en el parámetro, nos ahorramos esta línea
         $rules = [
             'email' => 'email|unique:users,email,'. $user->id,  // exceptuando el id del usuario actual. Si el usuario envía su propio email, no fallaría la regla
             'password' => 'min:6|confirmed', 
@@ -131,9 +131,9 @@ class UserController extends ApiController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        $user = User::findOrFail($id);
+        // $user = User::findOrFail($id);
         $user->delete();
         // return response()->json(['data' => $user], 200);
         return $this->showOne($user);

@@ -26,7 +26,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::resource('buyers', BuyerController::class, ['only' => ['index', 'show']]);
 
-Route::resource('categories', CategoryController::class, ['only' => ['create', 'edit']]);
+Route::resource('categories', CategoryController::class, []);
 
 Route::resource('products', ProductController::class, ['only' => ['index', 'show']]);
 

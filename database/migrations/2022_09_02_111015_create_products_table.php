@@ -25,6 +25,7 @@ class CreateProductsTable extends Migration
                 $table->bigInteger('seller_id')->unsigned(); // unsigned para evitar cualquier inconveniente al crear la clave foránea
                 // $table->foreign('seller_id')->references('id')->on('users');
                 $table->timestamps();
+                $table->softDeletes();
             });
 
 

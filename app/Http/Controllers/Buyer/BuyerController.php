@@ -22,11 +22,11 @@ class BuyerController extends ApiController
         return $this->showAll($compradores);
     }
 
-    public function show($id)
+    public function show(Buyer $buyer)
     {
-        $comprador = Buyer::has('transactions')->findOrFail($id); 
-        // return response()->json(['data' => $comprador], 200);
-        return $this->showOne($comprador);
+        // $comprador = Buyer::has('transactions')->findOrFail($id); 
+
+        return $this->showOne($buyer);
     }
 
 }

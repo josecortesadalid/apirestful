@@ -25,6 +25,7 @@ class CreateUsersTable extends Migration
             $table->rememberToken()->nullable(); // token que permitirá mantener activa la sesión de un usuario. No todos los usuarios van a tener un token en un momento, así que damos la posibilidad de que sea nulo
             $table->string('admin')->default(User::USUARIO_REGULAR);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -11,7 +12,7 @@ use Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
  
     const USUARIO_VERIFICADO = '1';
     const USUARIO_NO_VERIFICADO = '0';
@@ -20,6 +21,7 @@ class User extends Authenticatable
     const USUARIO_REGULAR = 'false';
 
     protected $table = 'users';
+    protected $dates = ['deleted_at'];
 
     protected $fillable = [ // Tanto en verified como en admin vamos a hacer uso de unas constantes que nos permitan verificar ambos estados (las creo arriba)
         'name',
