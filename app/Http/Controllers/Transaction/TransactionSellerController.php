@@ -4,11 +4,10 @@ namespace App\Http\Controllers\Transaction;
 
 use App\Http\Controllers\ApiController;
 use App\Http\Controllers\Controller;
-use App\Models\Product;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 
-class TransactionCategoryController extends ApiController
+class TransactionSellerController extends ApiController
 {
     /**
      * Display a listing of the resource.
@@ -17,7 +16,8 @@ class TransactionCategoryController extends ApiController
      */
     public function index(Transaction $transaction)
     {
-        $categories = $transaction->product->categories; // Una transaccion tiene un producto. Un producto tiene una lista de categorías 
-        return $this->showAll($categories);
+        $seller = $transaction->product->seller;
+        return $this->showOne($seller);
     }
+
 }

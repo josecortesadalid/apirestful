@@ -20,6 +20,8 @@ class User extends Authenticatable
     const USUARIO_ADMINISTRADOR = 'true';
     const USUARIO_REGULAR = 'false';
 
+    // const ELIMINADO = true;
+
     protected $table = 'users';
     protected $dates = ['deleted_at'];
 
@@ -31,6 +33,18 @@ class User extends Authenticatable
         'verification_token',
         'admin',
     ];
+
+    protected static function boot() // Suele utilizarse para construir e inicializar el modelo
+    {
+        parent::boot(); // importante para conservar el funcionamiento original de Laravel
+
+        self::deleting(function ($model) {
+            // $model->status = static::ELIMINADO;
+            $model->name = 'Este se ha eliminado';
+            $model->save();
+        });
+    }
+
 
     public function setNameAttribute($valor)
     {

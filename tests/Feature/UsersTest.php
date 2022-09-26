@@ -28,7 +28,8 @@ class UsersTest extends TestCase
                     'verified',
                     'admin',
                     'created_at',
-                    'updated_at'
+                    'updated_at',
+                    'deleted_at'
                 ]
             ]
         ]); 
@@ -78,7 +79,8 @@ class UsersTest extends TestCase
                     'admin',
                     'updated_at',
                     'created_at',
-                    'id'
+                    'id',
+                    'deleted_at'
             ]
         ]); 
     }
@@ -106,7 +108,8 @@ class UsersTest extends TestCase
                     'admin',
                     'updated_at',
                     'created_at',
-                    'id'
+                    'id',
+                    'deleted_at'
             ]
         ]); 
     }
@@ -136,7 +139,8 @@ class UsersTest extends TestCase
                     'admin',
                     'updated_at',
                     'created_at',
-                    'id'
+                    'id',
+                    'deleted_at'
             ]
         ]); 
     }
