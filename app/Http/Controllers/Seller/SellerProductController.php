@@ -89,9 +89,35 @@ class SellerProductController extends ApiController
      * @param  \App\Models\Seller  $seller
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Seller $seller)
+    public function update(Request $request, Seller $seller, Product $product)
     {
-        //
+        $rules = [
+            'quantity' => 'integer|min:1',
+            'status' => 'in: ' . Product::PRODUCTO_DISPONIBLE . ',' . Product::PRODUCTO_NO_DISPONIBLE, 
+            'image' => 'image',
+        ];
+        $this->validate($request, $rules);
+
+        if ($seller->id != $product->seller_id) {
+            return $this->errorResponse('El vendedor especificado no es el vendedor real del producto', 422);
+        }
+        $product->fill($request->only([
+            'name',
+            'description',
+            'quantity'
+        ]));
+        if ($request->has('status')) { 
+            $product->status = $request->status; // podemos recibir estatus disponible o no disponible
+
+            if ($product->estaDisponible() && $product->categories()->count() == 0) { // si se ha dicho que el producto está disponible pero no tiene categoría
+                $this->errorResponse('Un producto disponible debe tener al menos una categoría', 409);
+            }
+        }
+        if($product->isClean()){
+            return $this->errorResponse('Se debe especificar al menos un valor diferente para actualizar', 422);
+        }
+        $product->save();
+        return $this->showOne($product);
     }
 
     /**
