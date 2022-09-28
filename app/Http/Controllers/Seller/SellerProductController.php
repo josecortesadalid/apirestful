@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Models\Seller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class SellerProductController extends ApiController
@@ -54,7 +55,8 @@ class SellerProductController extends ApiController
         $data = $request->all();
 
         $data['status'] = Product::PRODUCTO_NO_DISPONIBLE;
-        $data['image'] = '1.jpg';
+        $data['image'] = $request->image->store(''); // laravel automáticamente sabe que es un archivo y nos da acceso a determinados métodos, como store
+        // el primer parámetro del store es la ruta, pero como la tenemos por defecto lo dejamos vacío, el segundo parámetro es el disco, lo tenemos por defecto así que no lo ponemos
         $data['seller_id'] = $seller->id;
 
         $product = Product::create($data);
@@ -113,6 +115,11 @@ class SellerProductController extends ApiController
                 $this->errorResponse('Un producto disponible debe tener al menos una categoría', 409);
             }
         }
+        if ($request->hasFile('image')) { 
+            Storage::delete($product->image); // borra la imagen anterior
+
+            $product->image = $request->image->store(''); // guarda la nueva
+        }
         if($product->isClean()){
             return $this->errorResponse('Se debe especificar al menos un valor diferente para actualizar', 422);
         }
@@ -129,6 +136,7 @@ class SellerProductController extends ApiController
     public function destroy(Seller $seller, Product $product)
     {
         $this->verificarVendedor($seller, $product);
+        Storage::delete($product->image);
         $product->delete();
         return $this->showOne($product);
     }

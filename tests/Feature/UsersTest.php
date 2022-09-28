@@ -58,7 +58,9 @@ class UsersTest extends TestCase
             ]
         ]); 
 
-        // $this->assertDatabaseHas('users', $user);
+        $user = array_slice($user, 0, 2);
+
+        $this->assertDatabaseHas('users', $user);
     }
 
     public function test_show()
@@ -143,5 +145,9 @@ class UsersTest extends TestCase
                     'deleted_at'
             ]
         ]); 
+
+        $actualizado = array_slice($actualizado, 0, 2);
+
+        $this->assertDatabaseHas('users', $actualizado);
     }
 }
