@@ -67,15 +67,15 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
-        'verification_token'
+       // 'verification_token'
     ];
 
-    protected function esVerificado()
+    public function esVerificado()
     {
         return $this->verified == User::USUARIO_VERIFICADO;
     }
 
-    protected function esAdministrador()
+    public function esAdministrador()
     {
         return $this->admin == User::USUARIO_ADMINISTRADOR;
     }

@@ -72,3 +72,5 @@ Route::resource('sellers.products', SellerProductController::class, ['only' => [
 
 
 Route::resource('users', UserController::class, []); // 'only' => ['index', 'create', 'edit']
+Route::name('verify')->get('users/verify/{token}', [UserController::class, 'verify']); 
+Route::name('resend')->get('users/{user}/resend', [UserController::class, 'resend']);
