@@ -6,6 +6,7 @@ use App\Http\Controllers\ApiController;
 use App\Http\Controllers\Controller;
 use App\Mail\UserCreated;
 use App\Models\User;
+use App\Transformers\UserTransformer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
@@ -16,6 +17,12 @@ class UserController extends ApiController
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct()
+    {
+        $this->middleware('client.credentials')->only(['store', 'resend']);
+        $this->middleware('transform.input' . UserTransformer::class)->only(['store', 'update']);
+    }
     public function index()
     {
         $usuarios = User::all();
