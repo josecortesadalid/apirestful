@@ -20,6 +20,7 @@ class BuyerSellerController extends ApiController
      */
     public function index(Buyer $buyer)
     {
+        $this->allowedAdminAction();
         $sellers = $buyer->transactions()->with('product.seller') // al poner .seller, laravel se encarga de resolver las transacciones junto con la lista de productos y el vendedor de cada uno de esos productos
         ->get()
         ->pluck('product.seller')

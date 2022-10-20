@@ -35,6 +35,7 @@ class CategoryController extends ApiController
      */
     public function store(Request $request)
     {
+        $this->allowedAdminAction();
         $rules = [
             'name' => 'required',
             'description' => 'required'
@@ -64,6 +65,7 @@ class CategoryController extends ApiController
      */
     public function update(Request $request, Category $category)
     {
+        $this->allowedAdminAction();
         // no necesitamos validar porque son campos opcionales, pero sí que debemos recibgir al menos uno de estos valores. Para eso utilizamos fill
         $category->fill($request->only([ // fill recibe los valores que vamos a actualizar
             'name',
@@ -86,6 +88,7 @@ class CategoryController extends ApiController
      */
     public function destroy(Category $category)
     {
+        $this->allowedAdminAction();
         $category->delete();
         return $this->showOne($category);
     }

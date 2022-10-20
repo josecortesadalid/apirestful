@@ -20,6 +20,7 @@ class CategoryTransactionController extends ApiController
      */
     public function index(Category $category)
     {
+        $this->allowedAdminAction();
         $transactions = $category->products()
         ->whereHas('transactions')
         ->with('transactions') // Existe la posibilidad de que alguna/s de estas transacciones estén vacías porque ese producto aún no tiene ninguna transacción asociada

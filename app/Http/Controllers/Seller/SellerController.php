@@ -14,6 +14,7 @@ class SellerController extends ApiController
     {
         parent::__construct(); 
         $this->middleware('scope:read-general')->only('show');
+        $this->middleware('can:view,seller')->only('show');
     }
     /**
      * Display a listing of the resource.
@@ -22,6 +23,7 @@ class SellerController extends ApiController
      */
     public function index()
     {
+        $this->allowedAdminAction();
         $vendedores = Seller::has('products')->get(); // recuerda que el modelo seller tiene una relación products. Se lo ponemos al has y lo obtenemos con el get
         // return response()->json(['data' => $vendedores], 200);
         return $this->showAll($vendedores);

@@ -24,9 +24,13 @@ class UserController extends ApiController
         $this->middleware('auth:api')->except(['store', 'verify', 'resend']);
         $this->middleware('transform.input' . UserTransformer::class)->only(['store', 'update']);
         $this->middleware('scope:manage-account')->only(['show', 'update']);
+        $this->middleware('can:view,user')->only('show');
+        $this->middleware('can:update,user')->only('update');
+        $this->middleware('can:delete,user')->only('destroy');
     }
     public function index()
     {
+        $this->allowedAdminAction();
         $usuarios = User::all();
         // return response()->json(['data' => $usuarios], 200);
         return $this->showAll($usuarios);
@@ -99,12 +103,12 @@ class UserController extends ApiController
     public function update(Request $request, User $user)
     {
         // $user = User::findOrFail($id); // En vez de $id, hemos puesto User $user en el parámetro, nos ahorramos esta línea
-        $rules = [
+        $reglas = [
             'email' => 'email|unique:users,email,'. $user->id,  // exceptuando el id del usuario actual. Si el usuario envía su propio email, no fallaría la regla
             'password' => 'min:6|confirmed', 
             'admin' => 'in:'. User::USUARIO_ADMINISTRADOR . ','. User::USUARIO_REGULAR, // que el valor de admin esté incluido en uno de estos dos posible valores
         ];
-        $this->validate($request, $rules);
+        $this->validate($request, $reglas);
 
         if($request->has('name')){
             $user->name = $request->name;
@@ -118,6 +122,7 @@ class UserController extends ApiController
             $user->password = bcrypt($request->password);
         }
         if($request->has('admin')){ 
+            $this->allowedAdminAction();
             if(!$user->esVerificado()){
                 // return response()->json(['error' => 'Solo los usuarios verificados pueden cambiar el valor del admin', 'code' => 409], 409); 
                 return $this->errorResponse('Solo los usuarios verificados pueden cambiar el valor del admin', 409);
