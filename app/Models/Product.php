@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Transformers\ProductTransformer;
+// use App\Transformers\ProductTransformer;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -14,7 +14,7 @@ class Product extends Model
     const PRODUCTO_DISPONIBLE = 'disponible';
     const PRODUCTO_NO_DISPONIBLE = 'no disponible';
 
-    public $transformer = ProductTransformer::class;
+    // public $transformer = ProductTransformer::class;
     protected $dates = ['deleted_at'];
     protected $fillable = [
         'name', 

@@ -2,14 +2,19 @@
 
 namespace App\Http\Controllers\Seller;
 
+use App\Http\Controllers\ApiController;
 use App\Http\Controllers\Controller;
 use App\Models\Seller;
 use App\Traits\ApiResponser;
 use Illuminate\Http\Request;
 
-class SellerController extends Controller
+class SellerController extends ApiController
 {
-    use ApiResponser;
+    public function __construct()
+    {
+        parent::__construct(); 
+        $this->middleware('scope:read-general')->only('show');
+    }
     /**
      * Display a listing of the resource.
      *

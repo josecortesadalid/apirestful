@@ -13,6 +13,7 @@ class CategoryController extends ApiController
     public function __construct()
     {
         $this->middleware('client.credentials')->only(['index', 'show']);
+        $this->middleware('auth:api')->except(['index', 'show']); // Debido a que los otros métodos están ya protegidos por el client credentials, solo tenemos que proteger los que faltan
         $this->middleware('transform.input' . CategoryTransformer::class)->only(['store', 'update']);
     }
     /**

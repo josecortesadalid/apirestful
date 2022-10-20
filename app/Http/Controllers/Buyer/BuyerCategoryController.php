@@ -9,6 +9,11 @@ use Illuminate\Http\Request;
 
 class BuyerCategoryController extends ApiController
 {
+    public function __construct()
+    {
+        parent::__construct(); // llamamos al constructor de la clase padre
+        $this->middleware('scope:read-general')->only('index');
+    }
     /**
      * Display a listing of the resource.
      *

@@ -7,7 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\Seller;
 use App\Models\User;
-use App\Transformers\ProductTransformer;
+use Illuminate\Auth\AuthenticationException;
+// use App\Transformers\ProductTransformer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -22,13 +23,17 @@ class SellerProductController extends ApiController
     public function __construct()
     {
         parent::__construct();
-        $this->middleware('transform.input' . ProductTransformer::class)->only(['store', 'update']);
+        // $this->middleware('transform.input' . ProductTransformer::class)->only(['store', 'update']);
+        $this->middleware('scope:manage-products')->except('index');
     }
     public function index(Seller $seller)
     {
-        $products = $seller->products;
+        if (request()->user()->tokenCan('read-general') || request()->user()->tokenCan('manage-products')) {
+            $products = $seller->products;
+            return $this->showAll($products);
+        }
 
-        return $this->showAll($products);
+        throw new AuthenticationException();
     }
 
     /**
