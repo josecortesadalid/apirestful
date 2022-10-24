@@ -19,7 +19,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['*'],
+    'allowed_origins' => ['*'], // podríamos indicar cualquier url a la que le daríamos acceso
 
     'allowed_origins_patterns' => [],
 

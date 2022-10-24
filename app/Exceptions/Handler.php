@@ -57,6 +57,13 @@ class Handler extends ExceptionHandler
     
     // public function render($request, Throwable $exception) : HttpFoundationResponse | JsonResponse
     // {
+        // $response = $this->handleException($request, $exception);
+
+        // app(CorsService::class)->addActualRequestHeaders($response, $request);
+
+        // return $response;
+    // }
+    // public function handleException($request, Exception $exception){
     //     if($exception instanceof ValidationException){
     //         return $this->convertValidationExceptionToResponse($exception, $request);
     //     }

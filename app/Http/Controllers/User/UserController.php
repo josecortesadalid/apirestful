@@ -155,6 +155,13 @@ class UserController extends ApiController
         return $this->showOne($user);
     }
 
+    public function me(Request $request)
+    {
+        $user = $request->user();
+
+        return $this->showOne($user);
+    }
+
     public function verify($token)
     {
         $user = User::where('verification_token', $token)->firstOrFail(); // encuentra el usuario que tenga el token que recibimos

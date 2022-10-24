@@ -71,7 +71,7 @@ Route::resource('sellers.categories', SellerCategoryController::class, ['only' =
 Route::resource('sellers.buyers', SellerBuyerController::class, ['only' => ['index']]);
 Route::resource('sellers.products', SellerProductController::class, ['only' => ['index', 'store', 'update', 'destroy']]);
 
-
+Route::name('me')->get('users/me', 'User\UserController@me');
 Route::resource('users', UserController::class, []); // 'only' => ['index', 'create', 'edit']
 Route::name('verify')->get('users/verify/{token}', [UserController::class, 'verify']); 
 Route::name('resend')->get('users/{user}/resend', [UserController::class, 'resend']);
